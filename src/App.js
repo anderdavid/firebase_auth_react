@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { app } from "./fb";
+import Home from "./Home";
+import Logeo from "./Logeo";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [usuario, setUsuario] = useState(null);
+  useEffect(() => {
+    app.auth().onAuthStateChanged((firebaseUser) => {
+      console.log("ya tienes sesion iniciada con ", firebaseUser);
+      setUsuario(firebaseUser);
+    });
+  }, []);
+  return <>{usuario ? <Home /> : <Logeo setUsuario={setUsuario} />}</>;
 }
 
 export default App;
